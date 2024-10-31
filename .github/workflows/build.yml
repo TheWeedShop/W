@@ -11,10 +11,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Swift
-        uses: swift-formatter/setup-swift@v1
+        uses: actions/checkout@v3
 
       - name: Build app
         run: |
@@ -30,7 +27,7 @@ jobs:
           zip -r TheWeedShop.ipa Payload
 
       - name: Upload IPA
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: TheWeedShop.ipa
           path: TheWeedShop.ipa
