@@ -1,0 +1,36 @@
+name: Build IPA
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Swift
+        uses: swift-formatter/setup-swift@v1
+
+      - name: Build app
+        run: |
+          mkdir TheWeedShop
+          cp main.swift Info.plist TheWeedShop/
+          cd TheWeedShop
+          swiftc -o TheWeedShop main.swift
+          mkdir -p TheWeedShop.app/Contents/MacOS
+          mv TheWeedShop TheWeedShop.app/Contents/MacOS/
+          cp Info.plist TheWeedShop.app/Contents/
+          mkdir -p Payload
+          cp -R TheWeedShop.app Payload/
+          zip -r TheWeedShop.ipa Payload
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v2
+        with:
+          name: TheWeedShop.ipa
+          path: TheWeedShop.ipa
